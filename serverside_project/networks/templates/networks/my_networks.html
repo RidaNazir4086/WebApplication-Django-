@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     {% load staticfiles %}
+
+  <title>MY_NETWORKS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static "home.css" %}">
+  <link rel="stylesheet" href="{% static "search_widget.css" %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+  <nav class="navbar navbar-fixed-top navbar-expand-sm bg-dark navbar-dark ">
+    <!-- Brand -->
+    <a class="navbar-brand" href="#">
+  <img src="{% static "picture1.png" %}" alt="Logo" style="width:80px;">
+    </a>
+    <form class="form-inline " autocomplete="off" action="/action_page.php">
+      <div class="autocomplete" style="width:300px;">
+        <input class="form-control mr-sm-2" id="search_widget" type="text" placeholder="Search">
+        <!--<button class="btn btn-success" type="submit" style="background-color: grey;border: none;";>Search</button>-->
+      </div>
+      </form>
+    <!-- Links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'home' %}" style="">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'networks' %}">My Networks</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'jobs' %}">Jobs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="messaging.html">Messaging</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="notification.html">Notifications</a>
+      </li>
+      <!-- Dropdown -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+          Me
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="{% url 'user_profile' %}">View Profile</a>
+          <a class="dropdown-item" href="#">Language</a>
+          <a class="dropdown-item" href="#">Need Help?</a>
+          <a class="dropdown-item" href="#">Posts & Activity</a>
+          <a class="dropdown-item" href="#">Job Posting</a>
+          <a class="dropdown-item" href="javascript:{document.getElementById('logout').submit()}">Sign out</a>
+          <form id="logout" method="POST" action="{% url 'logout' %}" >
+              {% csrf_token %}
+              <input type="hidden" />
+          </form>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <br><br><br>
+
+<div class="row">
+  <!-- Left cloumn -->
+    <div class="col-sm-3">
+      <div class="container" >
+      <div class="jumbotron"  >
+        <a href="#" role="button" >Connections</a>
+        <hr>
+        <a href="#" role="button" >Companies</a>
+        <hr>
+        <a href="#" role="button" >Groups</a>
+        <hr>
+        <a href="#" role="button" >Hashtags</a>
+        <hr>
+        <a href="#" role="button" >Grow your Network</a>
+      </div>
+    </div>
+     </div>
+     <!-- Middle cloumn -->
+    <div class="col-sm-6">
+      <div class="container" >
+      <div class="jumbotron"  >
+        <p style= "font-size: 150%;"><b>Recommended For You</b></p>
+
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+          <li><a data-toggle="tab" class="btn-lg" href="#people">People</a></li>
+          <li><a data-toggle="tab" class="btn-lg" href="#groups">Groups</a></li>
+          <li><a data-toggle="tab" class="btn-lg" href="#companies">Companies</a></li>
+          <li><a data-toggle="tab" class="btn-lg" href="#hashtags">Hashtags</a></li>
+        </ul>
+
+
+  <div class="tab-content">
+    <div id="people" class="tab-pane active ">
+      <div class="row">
+      {% for p in people %}
+        {% if p.id != user.id  %}
+        <div class="col-sm-4">
+          <div class="container" align="center">
+          <div class="jumbotron"  >
+            <img src="{% static "image4.jpg" %}" class="img-thumbnail" alt="profile image" width="80" height="90">
+            <a style= "font-size: 150%;" href="#"> <b> {{p.first_name }} {{p.last_name}} </b></a>
+            <p >Teacher at FAST NUCES </p>
+            {% if p.id in id %}
+               <form method="POST" action="{}">
+                {% csrf_token %}
+              <input type="hidden" name="sendTo" value="{{p}}">
+                   <input type="submit" class="btn-primary" value="Requested" />
+
+            </form>
+
+            {% elif p.id not in id %}
+
+             <form method="POST" action="{% url 'requesting' %}">
+                {% csrf_token %}
+              <input type="hidden" name="sendTo" value="{{p}}">
+                   <input type="submit" class="btn-primary" value="Connect" />
+
+            </form>
+
+
+            {% endif %}
+          </div>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+
+ </div>
+    </div>
+    <div id="groups" class="tab-pane fade">
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="container" align="center">
+          <div class="jumbotron"  >
+            <img src="{% static "image8.jpeg" %}" class="img-circle" alt="profile image" width="100" height="90">
+            <a style= "font-size: 150%;" href="#"> <b>GRN</b></a>
+            <br><br>
+            <button type="button" class="btn-primary">Join</button>
+          </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="container" align="center">
+          <div class="jumbotron"  >
+            <img src="{%static "image9.jpeg"%}" class="img-circle" alt="profile image" width="100" height="90">
+            <a style= "font-size: 150%;" href="#"> <b>SVHUB </b></a>
+            <br><br>
+            <button type="button" class="btn-primary">Join</button>
+          </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="container" align="center">
+          <div class="jumbotron"  >
+            <img src="{% static "image10.jpeg"%}" class="img-circle" alt="profile image" width="100" height="90">
+            <a style= "font-size: 150%;" href="#"> <b>SVASE </b></a>
+            <br><br>
+            <button type="button" class="btn-primary">Join</button>
+          </div>
+          </div>
+        </div>
+  </div>
+</div>
+
+    <div id="companies" class="tab-pane fade">
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="container" align="center">
+          <div class="jumbotron"  >
+            <img src= "{% static "image11.jpeg" %}" class="img-circle" alt="profile image" width="100" height="90">
+            <a style= "font-size: 150%;" href="#"> <b>Forbes</b></a>
+            <br><br>
+            <button type="button" class="btn-primary">Join</button>
+          </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="container" align="center">
+          <div class="jumbotron"  >
+            <img src="{% static "image12.jpeg" %}" class="img-circle" alt="profile image" width="100" height="90">
+            <a style= "font-size: 150%;" href="#"> <b>PIA </b></a>
+            <br><br>
+            <button type="button" class="btn-primary">Join</button>
+          </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="container" align="center">
+          <div class="jumbotron"  >
+            <img src= "{% static "image13.jpeg" %}" class="img-circle" alt="profile image" width="100" height="90">
+            <a style= "font-size: 150%;" href="#"> <b>JobNOw </b></a>
+            <br><br>
+            <button type="button" class="btn-primary">Join</button>
+          </div>
+          </div>
+        </div>
+  </div>
+    </div>
+    <div id="hashtags" class="tab-pane fade">
+
+    </div>
+
+</div>
+      </div>
+    </div>
+    </div>
+
+    <!-- Right cloumn -->
+    <div class="col-sm-3" >
+      <div class="container" align="center">
+        <div class="jumbotron" >
+        <a href="login.html"><img src="{% static "image3.jpg" %}" class="img-thumbnail" width="350" height="250"></a>
+          <hr>
+          <a href="#" role="button">About</a>
+          <br>
+          <a href="#" role="button" >Help Center</a>
+          <br>
+          <a href="#" role="button" >Privacy & Terms</a>
+        </div>
+    </div>
+  </div>
+  </div>
+
+  <script src="{% static "search_widget.js" %}"></script>
+
+</body>
+</html>

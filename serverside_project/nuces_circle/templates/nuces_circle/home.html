@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+       {% load staticfiles %}
+
+  <title>HOME</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static "home.css" %}">
+  <link rel="stylesheet" href="{% static "search_widget.css" %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'js/infinite.min.js' %}"></script>
+</head>
+
+<body>
+
+<nav class="navbar navbar-fixed-top navbar-expand-sm bg-dark navbar-dark ">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">
+<img src="{% static "picture1.png" %}" class="img-responsive" alt="Logo" style="width:80px;">
+  </a>
+
+  <form class="form-inline " autocomplete="off" action="/action_page.php">
+    <div class="autocomplete" style="width:300px;">
+      <input class="form-control mr-sm-2" id="search_widget" type="text" placeholder="Search">
+      <!--<button class="btn btn-success" type="submit" style="background-color: grey;border: none;";>Search</button>-->
+    </div>
+    </form>
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link active" href="{% url 'home' %}" style="">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'networks' %}">My Networks</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'jobs' %}">Jobs</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="messaging.html">Messaging</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="notification.html">Notifications</a>
+    </li>
+
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+        Me
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="{% url 'user_profile' %}">View Profile</a>
+        <a class="dropdown-item" href="#">Language</a>
+        <a class="dropdown-item" href="#">Need Help?</a>
+        <a class="dropdown-item" href="#">Posts & Activity</a>
+        <a class="dropdown-item" href="#">Job Posting</a>
+        <a class="dropdown-item" href="javascript:{document.getElementById('logout').submit()}">Sign out</a>
+          <form id="logout" method="POST" action="{% url 'logout' %}" >
+              {% csrf_token %}
+              <input type="hidden" />
+          </form>
+      </div>
+    </li>
+  </ul>
+</nav>
+<br><br><br>
+
+<div class="row">
+<div class="col-sm-3" >
+  <div class="container" align="center">
+  <div class="jumbotron"  >
+      <img src="{% static "picture2.jpg" %}" class="img-thumbnail" width="350" height="250">
+    <p style= "font-size: 150%;"> <b>{{user.first_name}} {{user.last_name}} </b></p>
+   Student at
+    {% for e in education %}
+          {{ e.school }}
+        <br>
+        {% endfor %}
+      <hr>
+      {% for s in skills %}
+          {{ s.skill }}
+        <br>
+        {% endfor %}
+        <hr>
+    <a   href="#" role="button" >Connections</a>
+    <br>
+    <a href="#" role="button" >Grow your Network</a>
+    <hr>
+    <a href="#" role="button" >Groups</a>
+    <br>
+    <a href="#" role="button" >Followed Hashtags</a>
+  </div>
+</div>
+</div>
+
+
+<!-- Middle cloumn -->
+  <div class="col-sm-6" >
+<div class="container" align="center" style="padding-top: 7%; padding-bottom: 7%;">
+  <div class="page-heade">
+    <div class="btn-group btn-group-justified"  >
+      <a href="{% url 'postForm' %}" class="btn btn-success btn-lg" style="background-color: grey;" >
+    <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Start a Post
+     </a>
+        <a href="#" class="btn btn-success btn-lg" style="background-color: grey;">
+      <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Upload Photo
+       </a>
+       <a href="#" class="btn btn-success btn-lg" style="background-color: grey;">
+      <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Upload video
+      </a>
+      <a href="#" class="btn btn-success btn-lg" style="background-color: grey;">
+      <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Upload document
+      </a>
+      <br>
+      </div>
+  </div>
+     <a href="{% url 'postForm' %}" role="button" style= "font-size: 150%;">Write an article</a><p style= "font-size: "large";"> on NUCES CIRCLE</p>
+     <hr>
+  </div>
+  <div class="container">
+  <div class="jumbotron">
+  <!--  <ul id='infinite-list'>
+    </ul> -->
+
+
+
+{% for p in posts %}
+    {# Each "contact" is a Contact model object. #}
+    <h5> {{ p.title }}</h5>
+    {{ p.body }}<br><br>
+    <small> Posted By: {{p.postedBy.first_name}} {{p.postedBy.last_name}}</small>
+    <small>Date: {{p.date}}</small>
+    <hr>
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if posts.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ contacts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+        </span>
+
+        {% if posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}">next</a>
+            <a href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+
+  </div>
+</div>
+
+</div>
+
+
+<!-- Right cloumn -->
+<div class="col-sm-3" >
+  <div class="container" align="center">
+    <div class="jumbotron" >
+    <a href="login.html"><img src="{% static "image3.jpg" %}" class="img-thumbnail" width="350" height="250"></a>
+      <hr>
+      <a href="#" role="button">About</a>
+      <br>
+      <a href="#" role="button" >Help Center</a>
+      <br>
+      <a href="#" role="button" >Privacy & Terms</a>
+    </div>
+</div>
+</div>
+
+</div>
+
+
+<script src="{% static "search_widget.js" %}"></script>
+
+</body>
+</html>

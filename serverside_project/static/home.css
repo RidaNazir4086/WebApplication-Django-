@@ -1,0 +1,29 @@
+body {font-family: Arial, Helvetica, sans-serif;}
+
+.navbar-nav a:hover {
+  background-color: blue;
+}
+.active {
+  background-color: blue;
+}
+.btn-group a:hover{
+  background-color: blue;
+
+}
+ /* infinite scrolling */
+#infinite-list {
+  /* We need to limit the height and show a scrollbar */
+  width: 500px;
+  height: 300px;
+  overflow: auto;
+
+}
+
+/* Optional eye candy below: */
+li {
+  padding: 10px;
+  list-style-type: none;
+}
+li:hover {
+  background: grey;
+}
